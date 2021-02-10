@@ -339,8 +339,18 @@ def cli(args):
     introspect_modules(modules, queue)
     root = Namespace('root', None, '')
 
-    while queue:
-        item = queue.popleft()
+    # * This section removes duplicates created by promoting objects from
+    # * modules into `__init__.py`s. By traversing in reverse order and hashing,
+    # * each package/module/class/function will be added once.
+    seen = set(queue)
+    reordered = deque()
+    for each in reversed(queue):
+        if each.__name__ not in seen:
+            reordered.appendleft(each)
+            seen.add(each.__name__)
+
+    while reordered:
+        item = reordered.popleft()
         group(item, root)
 
     if only_show:
