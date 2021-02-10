@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
 	name='dock-python-cli',
-	version='0.1.1',
+	version='0.1.2',
 	author='https://github.com/Pebaz',
 	py_modules=['dock_cli'],
 	entry_points={
